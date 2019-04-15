@@ -67,11 +67,11 @@ app.get("/articles/:id", function(req, res) {
 });
 
 app.post("/articles/:id", function(req, res) {
-  db.Note.create(req.body, function(err, dbNote) {
+  db.Note.create({ body: req.body }, function(err, dbNote) {
     if (err) res.json(err);
     db.Article.findOneAndUpdate(
       { _id: req.params.id },
-      { note: dbNote._id },
+      { $push: { notes: dbNote } },
       { new: true },
       function(err, dbArticle) {
         if (err) res.json(err);
