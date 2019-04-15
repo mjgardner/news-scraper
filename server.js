@@ -35,7 +35,7 @@ app.get("/scrape", function(req, res) {
       result.notes = [];
 
       if (result.title && result.link) {
-        db.Article.countDocuments({link: result.link}, function(err, count) {
+        db.Article.countDocuments({ link: result.link }, function(err, count) {
           if (err) return console.log(err);
           if (!count) {
             db.Article.create(result, function(err, dbArticle) {
@@ -52,9 +52,18 @@ app.get("/scrape", function(req, res) {
 
 app.get("/articles", function(req, res) {
   db.Article.find({}, function(err, dbArticles) {
-    if (err) res.json(err)
+    if (err) res.json(err);
     else res.json(dbArticles);
   });
+});
+
+app.get("/articles/:id", function(req, res) {
+  db.Article.findOne({ _id: req.params.id })
+    .populate("note")
+    .exec(function(err, dbArticle) {
+      if (err) res.json(err);
+      else res.json(dbArticle);
+    });
 });
 
 app.listen(PORT, function() {
