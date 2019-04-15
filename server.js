@@ -50,6 +50,13 @@ app.get("/scrape", function(req, res) {
   });
 });
 
+app.get("/articles", function(req, res) {
+  db.Article.find({}, function(err, dbArticles) {
+    if (err) res.json(err)
+    else res.json(dbArticles);
+  });
+});
+
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
 });
