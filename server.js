@@ -66,6 +66,21 @@ app.get("/articles/:id", function(req, res) {
     });
 });
 
+app.post("/articles/:id", function(req, res) {
+  db.Note.create(req.body, function(err, dbNote) {
+    if (err) res.json(err);
+    db.Article.findOneAndUpdate(
+      { _id: req.params.id },
+      { note: dbNote._id },
+      { new: true },
+      function(err, dbArticle) {
+        if (err) res.json(err);
+        else res.json(dbArticle);
+      }
+    );
+  });
+});
+
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
 });

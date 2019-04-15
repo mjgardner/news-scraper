@@ -12,12 +12,10 @@ var ArticleSchema = new Schema({
   summary: {
     type: String
   },
-  notes: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Note"
-    }
-  ]
+  note: {
+    type: Schema.Types.ObjectId,
+    ref: "Note"
+  }
 });
 
 var Article = mongoose.model("Article", ArticleSchema);
